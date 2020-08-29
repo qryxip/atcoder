@@ -1,0 +1,48 @@
+# Path to the test file (Liquid template)
+#
+# Variables:
+#
+# - `manifest_dir`: Package directory
+# - `contest`:      Contest ID (e.g. "abc100")
+# - `problem`:      Problem index (e.g. "A", "B")
+#
+# Additional filters:
+#
+# - `kebabcase`: Convert to kebab case (by using the `heck` crate)
+test-suite = "{{ manifest_dir }}/testcases/{{ problem | kebabcase }}.yml"
+#test-suite = "./testcases/{{ contest }}/{{ problem | kebabcase }}.yml"
+
+# Open files with the command (`jq` command)
+#
+# VSCode:
+#open = '["code"] + (.paths | map([.src, .test_suite]) | flatten) + ["-a", .manifest_dir]'
+# Emacs:
+#open = '["emacsclient", "-n"] + (.paths | map([.src, .test_suite]) | flatten)'
+
+[new]
+platform = "atcoder"
+path = "./{{ package_name }}"
+
+[new.template]
+target-dir = "./target"
+#lockfile = "/path/to/cargo-lock-template.toml"
+
+[new.template.dependencies]
+kind = "inline"
+content = '''
+proconio = { version = "0.4.1", features = ["derive"] }
+'''
+
+[new.template.src]
+kind = "inline"
+content = '''
+fn main() {
+    todo!();
+}
+'''
+
+[submit.via-binary]
+target = "x86_64-unknown-linux-musl"
+#cross = "cross"
+strip = "strip"
+#upx = "upx"
